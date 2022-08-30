@@ -1,6 +1,12 @@
 from facebook_page_scraper import Facebook_scraper
 from pymongo import MongoClient
 import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
+
 
 class fb_scraper:
 
@@ -25,5 +31,9 @@ class fb_scraper:
 if __name__ == '__main__':
     fbs = fb_scraper
     json_data  =  fbs.scrape_data('metaai')
-    uri = 'mongodb://admin:Admin1337@localhost:27017'
+    MONGO_HOST=os.getenv('MONGO_HOST')
+    MONGO_PORT=os.getenv('MONGO_PORT')
+    MONGO_USER=os.getenv('MONGO_USER')
+    MONGO_PASS=os.getenv('MONGO_PASS')
+    uri = f'mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_HOST}:{MONGO_PORT}'
     fbs.load_data(uri, 'admin', 'fb_page_data',  json_data)
