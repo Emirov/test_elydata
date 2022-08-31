@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import json
 import os
 from dotenv import load_dotenv
+from bson.json_util import  dumps as dmps
 load_dotenv()
 
 
@@ -24,13 +25,15 @@ class fb_scraper:
         db = conn[db]
         coll = db[collection]
         coll.insert_one(data_ins)
+        result = json.loads(dmps(data_ins))
         conn.close()
-        return json_data
+        return result
 
 
 if __name__ == '__main__':
     fbs = fb_scraper
-    json_data  =  fbs.scrape_data('metaai')
+    json_data  =  fbs.scrape_data('DataScience.py')
+    print(json_data)
     MONGO_HOST=os.getenv('MONGO_HOST')
     MONGO_PORT=os.getenv('MONGO_PORT')
     MONGO_USER=os.getenv('MONGO_USER')
